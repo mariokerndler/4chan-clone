@@ -10,10 +10,6 @@ export class CreateCommentDto {
   @IsNotEmpty()
   public comment: string;
 
-  @IsString()
-  @IsNotEmpty()
-  public file: string;
-
   @IsDefined()
   public thread: Thread;
 }

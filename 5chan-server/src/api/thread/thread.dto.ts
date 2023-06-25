@@ -15,10 +15,6 @@ export class CreateThreadDto {
   @IsNotEmpty()
   public comment: string;
 
-  @IsString()
-  @IsNotEmpty()
-  public file: string;
-
   @IsDefined()
   public board: Board;
 

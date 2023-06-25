@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './comment.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateCommentDto } from './comment.dto';
 
 @Injectable()
@@ -10,10 +10,6 @@ export class CommentService {
   private readonly repository: Repository<Comment>;
 
   public getComment(id: number): Promise<Comment> {
-    const options: FindOneOptions<Comment> = {
-      where: { id: id },
-    };
-
     return this.repository.findOne({
       where: { id: id },
     });
@@ -24,8 +20,22 @@ export class CommentService {
 
     comment.author = commentDto.author;
     comment.comment = commentDto.comment;
-    comment.file = commentDto.file;
     comment.thread = commentDto.thread;
+
+    return this.repository.save(comment);
+  }
+
+  public async uploadImageForComment(
+    id: number,
+    path: string,
+  ): Promise<Comment> {
+    const comment = await this.repository.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    comment.file = path;
 
     return this.repository.save(comment);
   }

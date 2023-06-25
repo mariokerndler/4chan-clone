@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FindOneOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Thread } from './thread.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateThreadDto } from './thread.dto';
@@ -32,8 +32,23 @@ export class ThreadService {
     thread.board = threadDto.board;
     thread.comment = threadDto.comment;
     thread.comments = threadDto.comments;
-    thread.file = threadDto.file;
     thread.subject = threadDto.subject;
+
+    return this.repository.save(thread);
+  }
+
+  public async uploadImageForThread(id: number, path: string): Promise<Thread> {
+    const thread = await this.repository.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        board: true,
+        comments: true,
+      },
+    });
+
+    thread.file = path;
 
     return this.repository.save(thread);
   }
