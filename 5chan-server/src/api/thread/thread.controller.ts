@@ -21,7 +21,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-@Controller('thread')
+@Controller({ path: 'thread', version: '1' })
 export class ThreadController {
   @Inject(ThreadService)
   private readonly service: ThreadService;

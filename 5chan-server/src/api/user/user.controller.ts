@@ -11,7 +11,7 @@ import { CreateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
-@Controller('user')
+@Controller({ path: 'user', version: '1' })
 export class UserController {
   @Inject(UserService)
   private readonly service: UserService;

@@ -11,7 +11,7 @@ import { BoardService } from './board.service';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './board.dto';
 
-@Controller('board')
+@Controller({ path: 'board', version: '1' })
 export class BoardController {
   @Inject(BoardService)
   private readonly service: BoardService;

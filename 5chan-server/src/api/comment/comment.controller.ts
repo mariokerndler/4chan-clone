@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-@Controller('comment')
+@Controller({ path: 'comment', version: '1' })
 export class CommentController {
   @Inject(CommentService)
   private readonly service: CommentService;
