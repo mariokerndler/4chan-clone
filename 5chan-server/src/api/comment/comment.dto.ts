@@ -1,7 +1,7 @@
 import { IsDefined, IsNotEmpty, IsString } from 'class-validator';
 import { Thread } from '../thread/thread.entity';
 import { ApiProperty } from '@nestjs/swagger';
-export class CreateCommentDto {
+export class CommentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()

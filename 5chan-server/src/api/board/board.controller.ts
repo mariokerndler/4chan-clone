@@ -10,8 +10,10 @@ import {
 import { BoardService } from './board.service';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './board.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller({ path: 'board', version: '1' })
+@ApiTags('Board')
 export class BoardController {
   @Inject(BoardService)
   private readonly service: BoardService;

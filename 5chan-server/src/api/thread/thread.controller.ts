@@ -1,27 +1,29 @@
 import {
   Body,
   Controller,
-  FileTypeValidator,
+  Delete,
   Get,
   HttpStatus,
   Inject,
-  MaxFileSizeValidator,
   Param,
-  ParseFilePipe,
   ParseFilePipeBuilder,
   ParseIntPipe,
   Post,
+  Put,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { ThreadService } from './thread.service';
 import { Thread } from './thread.entity';
-import { CreateThreadDto } from './thread.dto';
+import { ThreadDto } from './thread.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller({ path: 'thread', version: '1' })
+@ApiTags('Thread')
 export class ThreadController {
   @Inject(ThreadService)
   private readonly service: ThreadService;
@@ -32,13 +34,31 @@ export class ThreadController {
   }
 
   @Get()
-  public getThreads(): Promise<Thread[]> {
-    return this.service.getThreads();
+  @ApiQuery({ name: 'boardId', required: false, type: Number })
+  @ApiQuery({ name: 'author', required: false, type: String })
+  public getThreadsbyBoardId(
+    @Query('boardId') boardId?: number,
+    @Query('author') author?: string,
+  ): Promise<Thread[]> {
+    return this.service.getThreadByQueryParam(boardId, author);
   }
 
   @Post()
-  public createThread(@Body() body: CreateThreadDto): Promise<Thread> {
+  public createThread(@Body() body: ThreadDto): Promise<Thread> {
     return this.service.createThread(body);
+  }
+
+  @Put(':id')
+  public updateThread(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: ThreadDto,
+  ): Promise<Thread> {
+    return this.service.updateThread(id, body);
+  }
+
+  @Delete(':id')
+  public deleteThread(@Param('id', ParseIntPipe) id: number) {
+    this.service.deleteThread(id);
   }
 
   @Post(':id')

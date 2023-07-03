@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Inject,
@@ -8,17 +9,20 @@ import {
   ParseFilePipeBuilder,
   ParseIntPipe,
   Post,
+  Put,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { Comment } from './comment.entity';
-import { CreateCommentDto } from './comment.dto';
+import { CommentDto } from './comment.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller({ path: 'comment', version: '1' })
+@ApiTags('Comment')
 export class CommentController {
   @Inject(CommentService)
   private readonly service: CommentService;
@@ -29,8 +33,21 @@ export class CommentController {
   }
 
   @Post()
-  public createComment(@Body() body: CreateCommentDto): Promise<Comment> {
+  public createComment(@Body() body: CommentDto): Promise<Comment> {
     return this.service.createComment(body);
+  }
+
+  @Put(':id')
+  public updateComment(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: CommentDto,
+  ): Promise<Comment> {
+    return this.service.updateComment(id, body);
+  }
+
+  @Delete(':id')
+  public deleteComment(@Param('id', ParseIntPipe) id: number) {
+    this.service.deleteComment(id);
   }
 
   @Post(':id')

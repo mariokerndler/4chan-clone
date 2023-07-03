@@ -1,3 +1,4 @@
+import { AbstractEntity } from 'src/common/entities';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,23 +8,10 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  public id!: number;
-
+export class User extends AbstractEntity {
   @Column({ type: 'varchar', length: 120 })
   public name: string;
 
   @Column({ type: 'boolean', default: false })
   public isDeleted: boolean;
-
-  /*
-   * Create and Update Date Columns
-   */
-
-  @CreateDateColumn({ type: 'timestamp' })
-  public createdAt!: Date;
-
-  @UpdateDateColumn({ type: 'timestamp' })
-  public updatedAt!: Date;
 }

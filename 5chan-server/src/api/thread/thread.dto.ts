@@ -3,7 +3,7 @@ import { Board } from '../board/board.entity';
 import { Comment } from '../comment/comment.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateThreadDto {
+export class ThreadDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
